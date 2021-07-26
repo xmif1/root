@@ -170,6 +170,86 @@ Bool_t TMVA::DataSetInfo::IsSignal( const TMVA::Event* ev ) const
 }
 
 ////////////////////////////////////////////////////////////////////////////////
+/// constructs signal Event vector filtered by a specified tree type (eg. kTesting or kTraining)
+
+void TMVA::DataSetInfo::GetSignalEventCollection(TMVA::Types::ETreeType type, std::vector<TMVA::Event*>* filtered_events) const{
+    TMVA::DataSet* dataset = GetDataSet(); // reference to DataSet instance being filtered
+
+    for(auto& event: dataset->GetEventCollection(type)){ // iterate across filtered collection matching 'type'
+        // carry out further filtering by filtering out background events
+        if(IsSignal(event)){
+            filtered_events->push_back(event);
+        }
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+/// constructs signal data 2D float matrix from Event vector filtered by a specified tree type (eg. kTesting or kTraining)
+void TMVA::DataSetInfo::GetSignalMatrix(TMVA::Types::ETreeType type, Float_t** mat, Long64_t* dim1, Long64_t* dim2) const{
+   *dim2 = GetNVariables(); // set size of dimension 2 (# of variables i.e. columns)
+
+   // get filtered signal events
+   auto filtered_events = new std::vector<TMVA::Event*>;
+   GetSignalEventCollection(type, filtered_events);
+   *dim1 = filtered_events->size(); // set size of dimension 1 (# of filtered signal events i.e. rows)
+
+   *mat = new Float_t[*dim1];
+
+   Long64_t i = 0;
+   for(auto& event: *filtered_events){ // Populate the matrix...
+      mat[i] = new Float_t[*dim2];
+
+      for(Int_t j = 0; j < *dim2; j++){
+         mat[i][j] = event->GetValue(j);
+      }
+
+      i++;
+   }
+
+   delete filtered_events;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+/// constructs background Event vector filtered by a specified tree type (eg. kTesting or kTraining)
+
+void TMVA::DataSetInfo::GetBackgroundEventCollection(TMVA::Types::ETreeType type, std::vector<TMVA::Event*>* filtered_events) const{
+    TMVA::DataSet* dataset = GetDataSet(); // reference to DataSet instance being filtered
+
+    for(auto& event: dataset->GetEventCollection(type)){ // iterate across filtered collection matching 'type'
+        // carry out further filtering by filtering out signal events
+        if(!(IsSignal(event))){
+            filtered_events->push_back(event);
+        }
+    }
+}
+
+////////////////////////////////////////////////////////////////////////////////
+/// constructs background data 2D float matrix from Event vector filtered by a specified tree type (eg. kTesting or kTraining)
+void TMVA::DataSetInfo::GetBackgroundMatrix(TMVA::Types::ETreeType type, Float_t** mat, Long64_t* dim1, Long64_t* dim2) const{
+   *dim2 = GetNVariables(); // set size of dimension 2 (# of variables i.e. columns)
+
+   // get filtered signal events
+   auto filtered_events = new std::vector<TMVA::Event*>;
+   GetBackgroundEventCollection(type, filtered_events);
+   *dim1 = filtered_events->size(); // set size of dimension 1 (# of filtered signal events i.e. rows)
+
+   *mat = new Float_t[*dim1];
+
+   Long64_t i = 0;
+   for(auto& event: *filtered_events){ // Populate the matrix...
+      mat[i] = new Float_t[*dim2];
+
+      for(Int_t j = 0; j < *dim2; j++){
+         mat[i][j] = event->GetValue(j);
+      }
+
+      i++;
+   }
+
+   delete filtered_events;
+}
+
+////////////////////////////////////////////////////////////////////////////////
 
 std::vector<Float_t>*  TMVA::DataSetInfo::GetTargetsForMulticlass( const TMVA::Event* ev )
 {
