@@ -93,7 +93,7 @@ void TMVAEventFiltering(){
    }
 
    // Once again, remember to free memory as required...
-   for(Int_t i = 0; i < n_sig_test_events; i++)
+   for(Int_t i = 0; i < *n_sig_test_events; i++)
       delete[] sig_test_mat[i];
 
    delete[] sig_test_mat;
