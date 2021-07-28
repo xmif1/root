@@ -155,9 +155,9 @@ namespace TMVA {
       UInt_t             GetNClasses() const { return fClasses.size(); }
       Bool_t             IsSignal( const Event* ev ) const;
       void               GetSignalEventCollection(Types::ETreeType type, std::vector<TMVA::Event*>* filtered_events) const;
-      void               GetSignalMatrix(TMVA::Types::ETreeType type, Float_t** mat, Long64_t* dim1, Long64_t* dim2) const;
+      Float_t**          GetSignalMatrix(TMVA::Types::ETreeType type, Long64_t* dim1, Long64_t* dim2) const;
       void               GetBackgroundEventCollection(Types::ETreeType type, std::vector<TMVA::Event*>* filtered_events) const;
-      void               GetBackgroundMatrix(TMVA::Types::ETreeType type, Float_t** mat, Long64_t* dim1, Long64_t* dim2) const;
+      Float_t**          GetBackgroundMatrix(TMVA::Types::ETreeType type, Long64_t* dim1, Long64_t* dim2) const;
       std::vector<Float_t>* GetTargetsForMulticlass( const Event* ev );
       UInt_t             GetSignalClassIndex(){return fSignalClass;}
 

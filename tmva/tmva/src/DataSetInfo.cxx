@@ -185,7 +185,7 @@ void TMVA::DataSetInfo::GetSignalEventCollection(TMVA::Types::ETreeType type, st
 
 ////////////////////////////////////////////////////////////////////////////////
 /// constructs signal data 2D float matrix from Event vector filtered by a specified tree type (eg. kTesting or kTraining)
-void TMVA::DataSetInfo::GetSignalMatrix(TMVA::Types::ETreeType type, Float_t** mat, Long64_t* dim1, Long64_t* dim2) const{
+Float_t** TMVA::DataSetInfo::GetSignalMatrix(TMVA::Types::ETreeType type, Long64_t* dim1, Long64_t* dim2) const{
    *dim2 = GetNVariables(); // set size of dimension 2 (# of variables i.e. columns)
 
    // get filtered signal events
@@ -193,7 +193,8 @@ void TMVA::DataSetInfo::GetSignalMatrix(TMVA::Types::ETreeType type, Float_t** m
    GetSignalEventCollection(type, filtered_events);
    *dim1 = filtered_events->size(); // set size of dimension 1 (# of filtered signal events i.e. rows)
 
-   *mat = new Float_t[*dim1];
+   Float_t** mat;
+   mat = new Float_t*[*dim1];
 
    Long64_t i = 0;
    for(auto& event: *filtered_events){ // Populate the matrix...
@@ -207,6 +208,7 @@ void TMVA::DataSetInfo::GetSignalMatrix(TMVA::Types::ETreeType type, Float_t** m
    }
 
    delete filtered_events;
+   return mat;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -225,7 +227,7 @@ void TMVA::DataSetInfo::GetBackgroundEventCollection(TMVA::Types::ETreeType type
 
 ////////////////////////////////////////////////////////////////////////////////
 /// constructs background data 2D float matrix from Event vector filtered by a specified tree type (eg. kTesting or kTraining)
-void TMVA::DataSetInfo::GetBackgroundMatrix(TMVA::Types::ETreeType type, Float_t** mat, Long64_t* dim1, Long64_t* dim2) const{
+Float_t** TMVA::DataSetInfo::GetBackgroundMatrix(TMVA::Types::ETreeType type, Long64_t* dim1, Long64_t* dim2) const{
    *dim2 = GetNVariables(); // set size of dimension 2 (# of variables i.e. columns)
 
    // get filtered signal events
@@ -233,7 +235,8 @@ void TMVA::DataSetInfo::GetBackgroundMatrix(TMVA::Types::ETreeType type, Float_t
    GetBackgroundEventCollection(type, filtered_events);
    *dim1 = filtered_events->size(); // set size of dimension 1 (# of filtered signal events i.e. rows)
 
-   *mat = new Float_t[*dim1];
+   Float_t** mat;
+   mat = new Float_t*[*dim1];
 
    Long64_t i = 0;
    for(auto& event: *filtered_events){ // Populate the matrix...
@@ -247,6 +250,7 @@ void TMVA::DataSetInfo::GetBackgroundMatrix(TMVA::Types::ETreeType type, Float_t
    }
 
    delete filtered_events;
+   return mat;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
