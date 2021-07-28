@@ -80,8 +80,7 @@ void TMVAEventFiltering(){
 
    Long64_t* n_sig_vars;
    Long64_t* n_sig_test_events;
-   float** sig_test_mat;
-   datasetInfo.GetSignalMatrix(TMVA::Types::kTesting, sig_test_mat, n_sig_test_events, n_sig_vars);
+   float** sig_test_mat = datasetInfo.GetSignalMatrix(TMVA::Types::kTesting, n_sig_test_events, n_sig_vars);
 
    // Displaying (up to) the first 10 rows of the matrix...
    for(Int_t i = 0; i < *n_sig_test_events || i < 10; i++){
