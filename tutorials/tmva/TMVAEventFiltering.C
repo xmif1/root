@@ -78,8 +78,8 @@ void TMVAEventFiltering(){
    // vectors extracted above this can be easily constructed, however for convenience a function is provided to do just
    // that. Suppose we want a 2D float matrix representation of the signal testing data...
 
-   int* n_sig_vars;
-   int* n_sig_test_events;
+   Long64_t* n_sig_vars;
+   Long64_t* n_sig_test_events;
    float** sig_test_mat;
    datasetInfo.GetSignalMatrix(TMVA::Types::kTesting, sig_test_mat, n_sig_test_events, n_sig_vars);
 
